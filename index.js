@@ -75,10 +75,10 @@ function createEngineer() {
     ])
     .then((answers) => {
       const intern = new Intern(
-        answers.internName,
-        answers.internID,
-        answer.internEmail,
-        answer.school
+        answers.engineerName,
+        answers.engineerID,
+        answer.engineerEmail,
+        answer.gitHub
       );
       teamMembers.push(intern);
       menuFunction();
@@ -134,7 +134,8 @@ inquirer
     } else if (answer.menu === "intern") {
       createIntern();
     }
+    //look up fs write file arguments
     // else {
-    //   writeToFile(`index.html`, generateMarkdown(teamMembers));
+    //   writeFile(`index.html`, generateMarkdown(teamMembers));
     // }
   });
