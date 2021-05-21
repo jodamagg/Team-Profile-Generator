@@ -167,3 +167,45 @@ function generateHTML(teamMembers) {
 </html>
    `;
 }
+function generateEmpCard(employee) {
+  switch (employee.getRole()) {
+    case "Manager":
+      return `<div class="card text-gray bg-primary m-3 col-2">
+            <div class="card-header">Manager: ${employee.name} </div>
+            <div class="card-body">
+              <p class="card-text">ID:${employee.id} </p>
+              <p class="card-text">Email: <a href="mailto: ${employee.email} ">${employee.email}</a> </p>
+              <p class="card-text">Office number: ${employee.officeNumber} </p>
+            </div>
+          </div>`;
+      break;
+    case "Engineer":
+      return `<div class="card text-gray bg-primary m-3 col-2">
+        <div class="card-header">Engineer: ${employee.name} </div>
+        <div class="card-body">
+          <p class="card-text">ID: ${employee.id} </p>
+          <p class="card-text">
+            Email: <a href="mailto: ${employee.email} ">${employee.email}</a> </p>
+          <p class="card-text">
+            GitHub:
+            <a href="https://github.com/${employee.gitName}" target="_blank">${employee.gitName}</a>
+          </p>
+        </div>
+      </div>`;
+      break;
+    case "Intern":
+      return `<div class="card text-gray bg-primary m-3 col-2">
+        <div class="card-header">Intern: ${employee.name} </div>
+        <div class="card-body">
+          <p class="card-text">ID: ${employee.id} </p>
+          <p class="card-text">
+            Email: <a href="mailto: ${employee.email} ">${employee.email}</a> </p>
+          <p class="card-text">
+            school: ${employee.school}
+          </p>
+        </div>
+      </div>`;
+      break;
+  }
+}
+getEmployeeInfo();
