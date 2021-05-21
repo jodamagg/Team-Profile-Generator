@@ -1,8 +1,9 @@
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
+const fs = require("fs");
 const inquirer = require("inquirer");
-const teamMembers = [];
+const Manager = require("./Lib/Manager");
+const Engineer = require("./Lib/Engineer");
+const Intern = require("./Lib/Intern");
+const path = require("path");
 // function addManager {
 // inquirer prompts
 //  push teamMembers
@@ -164,6 +165,11 @@ function generateHTML(teamMembers) {
       
       ${temp}
   </body>
+  <script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+  crossorigin="anonymous"
+></script>
 </html>
    `;
 }
