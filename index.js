@@ -13,129 +13,157 @@ const teamMembers = [];
 // writeFile(teamMembers)
 // const engineer = new Engineer(answers.engineerName, answers.engineerId) => push that into teamMembers
 
-function createManager() {
+let teamMembers = [];
+const managerQuestions = [
+  {
+    type: "input",
+    message: "What is your name?",
+    name: "name",
+  },
+  {
+    type: "input",
+    message: "What is your email?",
+    name: "email",
+  },
+  {
+    type: "input",
+    message: "What is your ID?",
+    name: "id",
+  },
+  {
+    type: "input",
+    messgae: "What is your office number?",
+    name: "officeNum",
+  },
+];
+const engineerQuestions = [
+  {
+    type: "input",
+    message: "What is your name?",
+    name: "name",
+  },
+  {
+    type: "input",
+    message: "What is your email?",
+    name: "email",
+  },
+  {
+    type: "input",
+    message: "What is your ID?",
+    name: "id",
+  },
+  {
+    type: "input",
+    messgae: "What is your Git Hub username?",
+    name: "username",
+  },
+];
+const internQuestions = [
+  {
+    type: "input",
+    message: "What is your name?",
+    name: "name",
+  },
+  {
+    type: "input",
+    message: "What is your email?",
+    name: "email",
+  },
+  {
+    type: "input",
+    message: "What is your ID?",
+    name: "id",
+  },
+  {
+    type: "input",
+    messgae: "What is your school?",
+    name: "school",
+  },
+];
+
+function getEmployeeInfo() {
   inquirer
     .prompt([
       {
-        type: "input",
-        name: managerName,
-        message: "Manager's name?",
-      },
-      {
-        type: "input",
-        name: managerID,
-        message: "Manager's ID",
-      },
-      {
-        type: "input",
-        name: managerEmail,
-        message: "Manager's Email?",
-      },
-      {
-        type: "input",
-        name: officeNum,
-        message: "Manager's office Number?",
+        type: "list",
+        messgae: "What is the employee's role?",
+        choices: ["Manager", "Engineer", "Intern", "None"],
+        name: "role",
       },
     ])
-    .then((answers) => {
-      const manager = new Manager(
-        answers.managerName,
-        answers.managerID,
-        answers.managerEmail,
-        answers.officeNum
-      );
-      teamMembers.push(manager);
-      menuFunction();
+    .then((data) => {
+      switch (data.role) {
+        case "Manager":
+          inquirer.prompt(managerQuestions).then((data) => {
+            let newManager = new Manager(
+              data.name,
+              data.id,
+              data.email,
+              data.officeNum
+            );
+            teamMembers.push(newManager);
+            getEmployeeInfo();
+          });
+          break;
+        case "Engineer":
+          inquirer.prompt(engineerQuestions).then((data) => {
+            let newEngineer = new Engineer(
+              data.name,
+              data.id,
+              data.email,
+              data.username
+            );
+            teamMembers.push(newEngineer);
+            getEmployeeInfo();
+          });
+          break;
+        case "Intern":
+          inquirer.prompt(internQuestions).then((data) => {
+            let newIntern = new Intern(
+              data.name,
+              data.id,
+              data.email,
+              data.school
+            );
+            teamMembers.push(newIntern);
+            getEmployeeInfo();
+          });
+          break;
+        case "None":
+          fs.writeFileSync(
+            path.join(__dirname, "index.html"),
+            generateHTML(teamMembers),
+            (err) => {
+              err ? console.error(err) : console.log("html generated");
+            }
+          );
+          break;
+      }
     });
 }
 
-function createEngineer() {
-  inquire
-    .prompt([
-      {
-        type: "input",
-        name: engineerName,
-        message: "Engineer's name?",
-      },
-      {
-        type: "input",
-        name: engineerID,
-        message: "Engineer's ID ?",
-      },
-      {
-        type: "input",
-        name: engineerEmail,
-        message: "Engineer's Email?",
-      },
-      {
-        type: "input",
-        name: gitHub,
-        message: "Engineer's gitHub?",
-      },
-    ])
-    .then((answers) => {
-      const intern = new Intern(
-        answers.engineerName,
-        answers.engineerID,
-        answer.engineerEmail,
-        answer.gitHub
-      );
-      teamMembers.push(intern);
-      menuFunction();
-    });
-}
-function createIntern() {
-  inquire
-    .prompt([
-      {
-        type: "input",
-        name: internName,
-        message: "Intern's name?",
-      },
-      {
-        type: "input",
-        name: internID,
-        message: "Intern's ID ?",
-      },
-      {
-        type: "input",
-        name: internEmail,
-        message: "Intern's Email?",
-      },
-      {
-        type: "input",
-        name: school,
-        message: "Intern's school?",
-      },
-    ])
-    .then((answers) => {
-      const intern = new Intern(
-        answers.internName,
-        answers.internID,
-        answer.internEmail,
-        answer.school
-      );
-      teamMembers.push(intern);
-      menuFunction();
-    });
-}
-
-menuFunction();
-inquirer
-  .prompt({
-    type: "list",
-    name: menu,
-    message: "Would you like to add another employee",
-    choices: ["engineer", "intern", "none"],
-  })
-  .then((answer) => {
-    if (answer.menu === "engineer") {
-      createEngineer();
-    } else if (answer.menu === "intern") {
-      createIntern();
-    }
-    //look up fs write file arguments
-    // else {
-    //   writeFile(`index.html`, generateMarkdown(teamMembers));
-    // }
+function generateHTML(teamMembers) {
+  let temp = "";
+  teamMembers.forEach((employee) => {
+    temp += generateEmpCard(employee);
   });
+  return `
+   <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <title>Document</title>
+  </head>
+  <body>
+      <header> My Team</header>
+      <header><h1>TEAM</h1></header>
+    <div class="row">
+      
+      ${temp}
+  </body>
+</html>
+   `;
+}
